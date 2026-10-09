@@ -1,4 +1,4 @@
-% Based on IAC 2024 unofficial LaTeX style & ICML 2025 LaTex style
+% Based on the IAC 2024 unofficial LaTeX style; the author block reuses the ICML 2025 LaTeX style
 % See COPYRIGHT for the authorship history
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ai4x}[AI4X conference style]
@@ -24,6 +24,10 @@
 
 \renewcommand{\headrulewidth}{0pt}
 
+%% ------------ CONFERENCE ---------------------------
+% Used in the page header and in the PDF metadata
+\newcommand*{\ai@venue}{AI4X Conference 2027, Bremen, Germany, June 14\textendash 17}
+
 %% ------------ APPEARANCE ---------------------------
 % Document setup
 \RequirePackage[margin=2cm,top=2cm,bottom=2cm,headheight=\baselineskip]{geometry} % page layout
@@ -33,7 +37,10 @@
 % Fonts
 \RequirePackage[rmdefault]{sourceserifpro}
 \RequirePackage[sfdefault]{sourcesanspro}
-\RequirePackage[libertine]{newtxmath}
+% Source Serif has no math companion: newtxmath provides the symbols,
+% mathastext sets the math letters and digits in Source Serif itself
+\RequirePackage{newtxmath}
+\RequirePackage[italic,noplusnominus,noequal]{mathastext}
 
 \RequirePackage{silence}
 \WarningFilter{latex}{Command \showhyphens has changed}
@@ -44,24 +51,22 @@
     pdfborder={0 0 0}
 }
 
-% Source: ICML 2025 template
-% Write yourself as an icmlauthor and be inspired!
-\gdef\icmlfullauthorlist{}
-\newcommand\addstringtofullauthorlist{\g@addto@macro\icmlfullauthorlist}
-\newcommand\addtofullauthorlist[1]{%
-  \ifdefined\icmlanyauthors%
-    \addstringtofullauthorlist{, #1}%
+%% ------------ AUTHORS ------------------------------
+\gdef\ai@fullauthorlist{}
+\newcommand\ai@addstringtofullauthorlist{\g@addto@macro\ai@fullauthorlist}
+\newcommand\ai@addtofullauthorlist[1]{%
+  \ifdefined\ai@anyauthors%
+    \ai@addstringtofullauthorlist{, #1}%
   \else%
-    \addstringtofullauthorlist{#1}%
-    \gdef\icmlanyauthors{1}%
+    \ai@addstringtofullauthorlist{#1}%
+    \gdef\ai@anyauthors{1}%
   \fi%
-%  \ifdefined\nohyperref\else
   \ifdefined\hypersetup%
-    \hypersetup{pdfauthor=\icmlfullauthorlist}%
-    \fi%\fi
+    \hypersetup{pdfauthor=\ai@fullauthorlist}%
+    \fi%
   }
 
-\newenvironment{icmlauthorlist}{%
+\newenvironment{authorlist}{%
   \setlength\topsep{0pt}
   \setlength\parskip{0pt}
   \begin{center}
@@ -70,107 +75,95 @@
 }
 
 \newcounter{@affiliationcounter}
-\newcommand{\@pa}[1]{%
+\newcommand{\ai@pa}[1]{%
 % ``#1''
 \ifcsname the@affil#1\endcsname
    % do nothing
 \else
-  \ifcsname @icmlsymbol#1\endcsname
+  \ifcsname ai@symbol@#1\endcsname
     % equal contribution used
-    \gdef\equalContributionPresent{1}
+    \gdef\ai@equalpresent{1}
   \else
   \stepcounter{@affiliationcounter}%
   \newcounter{@affil#1}%
   \setcounter{@affil#1}{\value{@affiliationcounter}}%
   \fi
 \fi%
-\ifcsname @icmlsymbol#1\endcsname
-  \textsuperscript{\csname @icmlsymbol#1\endcsname\,}%
+\ifcsname ai@symbol@#1\endcsname
+  \textsuperscript{\csname ai@symbol@#1\endcsname\,}%
 \else
   \textsuperscript{\arabic{@affil#1}\,}%
 \fi
 }
 
-\newcommand{\icmlauthor}[4]{%
- \mbox{\textbf{\ifthenelse{\equal{#4}{presenting}}{\underline{#1}}{#1}}}\,%
+\newcommand{\paperauthor}[4]{%
+ \mbox{\textbf{\ifstrequal{#4}{presenting}{\underline{#1}}{#1}}}\,%
  \ifstrempty{#3}{}{\textsuperscript{\orcidlink{#3}}}%
- \@for\theaffil:=#2\do{\@pa{\theaffil}} \addtofullauthorlist{#1}%
+ \edef\ai@labels{\zap@space#2 \@empty}% allow "a, b" as well as "a,b"
+ \@for\theaffil:=\ai@labels\do{\ai@pa{\theaffil}} \ai@addtofullauthorlist{#1}%
 }
 
-\newcommand{\icmlsetsymbol}[2]{%
-  \expandafter\gdef\csname @icmlsymbol#1\endcsname{#2}
+\newcommand{\setauthorsymbol}[2]{%
+  \expandafter\gdef\csname ai@symbol@#1\endcsname{#2}
  }
 
-\newcommand{\icmlaffiliation}[2]{%
+\newcommand{\affiliation}[2]{%
 \ifcsname the@affil#1\endcsname
  \expandafter\gdef\csname @affilname\csname the@affil#1\endcsname\endcsname{\textit{#2}}%
 \else
-  {\bf AUTHORERR: Error in use of \textbackslash{}icmlaffiliation command. Label ``#1'' not mentioned in some \textbackslash{}icmlauthor\{author name\}\{labels here\} command beforehand. }
+  {\bf AUTHORERR: Error in use of \textbackslash{}affiliation command. Label ``#1'' not mentioned in some \textbackslash{}paperauthor\{author name\}\{labels here\} command beforehand. }
   \typeout{}%
   \typeout{}%
   \typeout{*******************************************************}%
   \typeout{Affiliation label undefined. }%
-  \typeout{Make sure \string\icmlaffiliation\space follows }
-  \typeout{all of \string\icmlauthor\space commands}%
+  \typeout{Make sure \string\affiliation\space follows }
+  \typeout{all of \string\paperauthor\space commands}%
   \typeout{*******************************************************}%
   \typeout{}%
   \typeout{}%
 \fi
 }
 
-\newcommand{\icmlcorrespondingauthor}[2]{
- \ifdefined\icmlcorrespondingauthor@text
-   \g@addto@macro\icmlcorrespondingauthor@text{, #1 \authormail{#2}}
+\newcommand{\correspondingauthor}[2]{
+ \ifdefined\ai@corresponding
+   \g@addto@macro\ai@corresponding{, #1 \authormail{#2}}
  \else
-   \gdef\icmlcorrespondingauthor@text{#1 \authormail{#2}}
+   \gdef\ai@corresponding{#1 \authormail{#2}}
  \fi
 }
 
 \newcommand{\authormail}[1]{\href{mailto:#1}{\uline{#1}}}
 
 \setlength\parindent{12pt}
+% A float-only column must be mostly full, otherwise floats go to the top of the next column
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
 \RequirePackage{caption}
-\captionsetup[figure]{name=Fig.,format=hang,indention=-20pt}
-\captionsetup[table]{format=hang,indention=-24pt}
-
-\titlespacing{\section}{0pt}{*3}{*1.5}
-\titlespacing{\subsection}{0pt}{*2.5}{*0.5}
-\titlespacing{\subsubsection}{12pt}{*2}{*0.5}
-
-\newcommand*{\IACpaperyear}[1]{\def\iac@paperyear{#1}}\IACpaperyear{}
-\newcommand*{\IACconference}[1]{\def\iac@conference{#1}}\IACconference{}
-\newcommand*{\IAClocation}[1]{\def\iac@location{#1}}\IAClocation{}
-\newcommand*{\IACdate}[1]{\def\iac@date{#1}}\IACdate{}
+\captionsetup{format=plain,indention=1em}
 
 % Set header and footer
 \pagestyle{fancy}%
 \fancyhf{}
-
-% Header
-\chead{\footnotesize {\iac@conference} {\iac@paperyear}, {\iac@location}, {\iac@date}}
+\fancyhead[C]{\footnotesize\ai@venue}
+\fancyfoot[C]{\footnotesize\thepage}
 
 
 %-----------------------------------------------------
 %% ------------ SECTIONS STYLE
-% Sections spacing
-\titlespacing{\section}{0pt}{15pt}{1pt}%
-\titlespacing{\subsection}{0pt}{15pt}{1pt}%
-\titlespacing{\subsubsection}{0pt}{15pt}{1pt}%
+% Sections spacing; the starred form leaves the first paragraph unindented
+\titlespacing*{\section}{0pt}{15pt}{1pt}%
+\titlespacing*{\subsection}{0pt}{15pt}{1pt}%
+\titlespacing*{\subsubsection}{0pt}{15pt}{1pt}%
 
-\titleformat{\section}{\bfseries}{\arabic{section}. }{0.5em}{{#1}}%
-\titleformat{\subsection}{\itshape}{\arabic{section}.\arabic{subsection}}{0.5em}{{#1}}%
-\titleformat{\subsubsection}{\itshape}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}{0.5em}{{#1}}%
+\titleformat{\section}{\bfseries}{\thesection.}{0.5em}{#1}%
+\titleformat{\subsection}{\itshape}{\thesubsection.}{0.5em}{#1}%
+\titleformat{\subsubsection}{\itshape}{\thesubsubsection.}{0.5em}{#1}%
 
 % Appendix handling setup
 % Customizing the appendix title format
 % Define hooks to customize the formatting within the appendices
 \AtBeginEnvironment{appendices}{%
-    \titleformat{\section}
-      {\normalfont\bfseries}
-      {Appendix \thesection.}
-      {1em}
-      {#1}
-    \titlespacing*{\section}{0pt}{5.5ex plus 1ex minus .2ex}{3.3ex plus .2ex}
+    \titleformat{\section}{\bfseries}{Appendix \thesection.}{0.5em}{#1}
     \setcounter{section}{0}%
     \setcounter{subsection}{0}%
     \setcounter{subsubsection}{0}%
@@ -183,12 +176,8 @@
 }
 
 \AtEndEnvironment{appendices}{%
-    % Reset the title format to the default or document-wide setting
-    \titleformat{\section}
-      {\normalfont\Large\bfseries}
-      {\thesection}
-      {1em}
-      {#1}
+    % Reset the title format to the document-wide setting
+    \titleformat{\section}{\bfseries}{\thesection.}{0.5em}{#1}
 }
 
 
@@ -197,11 +186,11 @@
 
 \AtBeginDocument{
   \hypersetup{
-    pdfsubject={{\iac@conference} {\iac@paperyear}, {\iac@location}, {\iac@date}}
+    pdfsubject={\ai@venue}
   }
 }
 
-\newcommand{\icmlEqualContribution}{\textsuperscript{*}Equal contribution }
+\newcommand{\ai@equalcontribution}{\textsuperscript{*}Equal contribution }
 \newcounter{@affilnum}
 \def\@maketitle{%
   \newpage
@@ -212,20 +201,20 @@
 }
 
 \newcommand{\printAffiliations}{%
-    \ifdefined\equalContributionPresent
-    \icmlEqualContribution
+    \ifdefined\ai@equalpresent
+    \ai@equalcontribution
     \fi
     \stepcounter{@affiliationcounter}%
     \forloop{@affilnum}{1}{\value{@affilnum} < \value{@affiliationcounter}}{
     \textsuperscript{\arabic{@affilnum}}\ifcsname @affilname\the@affilnum\endcsname%
     \csname @affilname\the@affilnum\endcsname%
     \else
-    {\bf AUTHORERR: Missing \textbackslash{}icmlaffiliation.}
+    {\bf AUTHORERR: Missing \textbackslash{}affiliation.}
     \fi
     }.
-    \ifdefined\icmlcorrespondingauthor@text
-    Correspondence to: \icmlcorrespondingauthor@text.
+    \ifdefined\ai@corresponding
+    Correspondence to: \ai@corresponding.
     \else
-    {\bf AUTHORERR: Missing \textbackslash{}icmlcorrespondingauthor.}
+    {\bf AUTHORERR: Missing \textbackslash{}correspondingauthor.}
     \fi
-}%
+}%-----

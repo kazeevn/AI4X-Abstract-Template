@@ -2,40 +2,34 @@
 \usepackage{tabularx}
 %\usepackage{tabulary}
 
-\IACconference{AI4X Conference}
-\IACpaperyear{2027} % format yyyy
-\IAClocation{Bremen, Germany} % used in the header
-\IACdate{June 14-17, 2027} % used in the header
-
 \title{AI4X Conference 2027 abstract template and formatting guidelines}
 
 % Filling all the PDF meta information improves search rankings
 \hypersetup{
     pdfkeywords={AI, machine learning, science, conference template}
-    % pdfauthor and pdftitle are filled autormatically
+    % pdfauthor and pdftitle are filled automatically
     % by the ai4x style at \begin{document}
 }
 
 \begin{document}
 \twocolumn[
 \maketitle
-\icmlsetsymbol{equal}{*}
-\begin{icmlauthorlist}
-% An expanded ICML style
+\setauthorsymbol{equal}{*}
+\begin{authorlist}
 % {Full Name}{affiliation1, affiliation2}{ORCID}{presenting}
 % equal in affiliations means those authors will get an "* Equal contribution" note
 % presenting in the last argument means the author is the presenting one
-\icmlauthor{First Author}{equal,olympus}{0000-0000-0000-0000}{}
-\icmlauthor{Presenting Author}{equal,atlantis}{}{presenting}
-\icmlauthor{Middle Author}{atlantis,olympus}{0000-0000-0000-0000}{}
-\icmlauthor{Last Author}{void}{}{}
-\end{icmlauthorlist}
+\paperauthor{First Author}{equal,olympus}{0000-0000-0000-0000}{}
+\paperauthor{Presenting Author}{equal,atlantis}{}{presenting}
+\paperauthor{Middle Author}{atlantis,olympus}{0000-0000-0000-0000}{}
+\paperauthor{Last Author}{void}{}{}
+\end{authorlist}
 
-\icmlaffiliation{olympus}{Olympus Academy of Mountaineering, Mytikas, Greece 402 00}
-\icmlaffiliation{atlantis}{University of Underwater Studies, Atlantis 341}
-\icmlaffiliation{void}{University of Nowhere}
-\icmlcorrespondingauthor{Last Author}{dropides@void.ai}
-\icmlcorrespondingauthor{Hades}{boss@underworld.ai}
+\affiliation{olympus}{Olympus Academy of Mountaineering, Mytikas, Greece 402 00}
+\affiliation{atlantis}{University of Underwater Studies, Atlantis 341}
+\affiliation{void}{University of Nowhere}
+\correspondingauthor{Last Author}{dropides@void.ai}
+\correspondingauthor{Middle Author}{boss@underworld.ai}
 
 \printAffiliations
 \vskip 2.5ex
@@ -44,11 +38,15 @@
 
 \section{Introduction}
 \label{sec:introduction}
-The page limit is two pages, not counting the acknowledgments, references, and appendices. Please do not change the font sizes, margins or line spacing to squeeze more text. ORCID links for the authors will make it easier for the readers to find you, but are not mandatory.
+The page limit is two pages, not counting the acknowledgments, references, and appendices. Please do not change the font sizes, margins or line spacing to squeeze more text.
+
+The review is single-blind: the reviewers see the author names, so do not anonymize your submission. At least one author must be marked as corresponding with \verb|\correspondingauthor|. ORCID links for the authors will make it easier for the readers to find you, but are not mandatory.
+
+AI4X is non-archival: an accepted abstract is not a formal publication, so you are free to publish the work later in a journal or in conference proceedings.
 
 \section{Substantial section}
 \label{sec:substantial}
-If you want to, you can split the text into sections. An AIX -- Accelerate abstract is not a journal paper, so there is no hard requirement for the work to be reproducible from the text. At the same time, the reviewers and, ultimately, your fellow attendees look for novelty, significance, and soundness -- the abstract must convey what was done, why, and the validation results. It can include equations, such as Formula~\ref{eq:pattern-math}. If the abstract is based on your previously published work, it should be clearly stated and cited.
+If you want to, you can split the text into sections. An AI4X abstract is not a journal paper, so there is no hard requirement for the work to be reproducible from the text. At the same time, the reviewers and, ultimately, your fellow attendees look for novelty, significance, and soundness -- the abstract must convey what was done, why, and the validation results. It can include equations, such as Equation~\eqref{eq:pattern-math}. If the abstract is based on your previously published work, it should be clearly stated and cited.
 \begin{equation}
     \label{eq:pattern-math}
     \left(\lim_{x\to 8^+}\frac{1}{x-8} = \infty\right)\Rightarrow\left(\lim_{x\to 3^+}\frac{1}{x-3} = \omega\right)
@@ -58,32 +56,31 @@ If you want to, you can split the text into sections. An AIX -- Accelerate abstr
 A good way to show novelty is to state the difference from the related work, for example \cite{mettam2009chapter,strunk2000elements,mack2015virgin}.
 
 \subsection{Figures and tables}
-Figure~\ref{fig:example} and table~\ref{tab:table} are single--column, but two--column layout can also be used.
+Figure~\ref{fig:example} and Table~\ref{tab:results} are single-column, but two-column layout can also be used.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[width=\columnwidth]{pics/bremen-lab.jpeg}
-\caption{Collaboraion was just as important to the sucees of the study as autoamtion}
+\caption{Collaboration was just as important to the success of the study as automation. The illustration was generated with Google Gemini (Nano Banana), and its defects are kept on purpose: repeated labels, a garbled label for the dog, and numbered markers that refer to nothing. Check generated figures as carefully as the rest of your work.}
 \label{fig:example}
 \end{figure}
 
 \begin{table}[htp]
-\caption{Major data of the orbits of Venus, Earth, Mars and Jupiter.}
-\label{tab:table}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-\begin{tabularx}{\columnwidth}{XCCCC}
+\caption{Formation energy prediction on a held-out test set. MAE is the mean absolute error, mean $\pm$ standard deviation over five random seeds; time is the inference time per structure; GNN is a graph neural network. The best value in each column is in bold. The numbers are illustrative.}
+\label{tab:results}
+\begin{tabularx}{\columnwidth}{Xccc}
 \toprule
-& Venus & Earth & Mars & Jupiter\\\midrule
-$M/M_\text{E}$ & 0.82 & 1 & 0.11 & 317.89\\
-$R$, AU & 0.7233 & 1 & 1.524 & 5.203\\
-$i$, deg & 3.40 & 0 & 1.85 & 1.30\\
-$T$, years & 0.62 & 1 & 1.88 & 11.86\\
+Model & MAE $\downarrow$ & $R^2$ $\uparrow$ & Time $\downarrow$\\
+& meV/atom & & ms\\\midrule
+Random forest & $85 \pm 3$ & $0.91$ & $\mathbf{0.4}$\\
+GNN & $33 \pm 2$ & $0.98$ & $2.1$\\
+Ours & $\mathbf{28 \pm 1}$ & $\mathbf{0.99}$ & $1.5$\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \section*{AI Acknowledgments}
-You are welcome to share how you used AI to prepare the work, be it grammar cheeking or doing the study end-to-end. This is not mandatory and is not included in the page limit.
+At AI4X, we welcome the new AI age and believe that, used well, AI can do much more than produce ``AI slop''. You are welcome to share how you used AI to prepare the work, be it grammar checking or doing the study end-to-end. This is not mandatory and is not included in the page limit. Whatever tools you use, the authors are fully responsible for the submission, including any text, code, figures, and references produced with AI; in particular, check that every cited work exists. This template's own disclosure: Figure~\ref{fig:example} was generated with Google Gemini (Nano Banana), and the class file and this text were revised with Claude Code (Claude Opus 5.5).
 
 \section*{Acknowledgments}
 Acknowledgments and references are not numbered and not included in the page limit -- feel free to give credit where it's due. The template is based on the IAC 2024 unofficial template~\cite{iac2024template}.
