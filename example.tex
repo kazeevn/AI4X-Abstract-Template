@@ -1,0 +1,97 @@
+\documentclass{ai4x}
+\usepackage{tabularx}
+%\usepackage{tabulary}
+
+\IACconference{AI4X Conference}
+\IACpaperyear{2027} % format yyyy
+\IAClocation{Bremen, Germany} % used in the header
+\IACdate{June 14-17, 2027} % used in the header
+
+\title{AI4X Conference 2027 abstract template and formatting guidelines}
+
+% Filling all the PDF meta information improves search rankings
+\hypersetup{
+    pdfkeywords={AI, machine learning, science, conference template}
+    % pdfauthor and pdftitle are filled autormatically
+    % by the ai4x style at \begin{document}
+}
+
+\begin{document}
+\twocolumn[
+\maketitle
+\icmlsetsymbol{equal}{*}
+\begin{icmlauthorlist}
+% An expanded ICML style
+% {Full Name}{affiliation1, affiliation2}{ORCID}{presenting}
+% equal in affiliations means those authors will get an "* Equal contribution" note
+% presenting in the last argument means the author is the presenting one
+\icmlauthor{First Author}{equal,olympus}{0000-0000-0000-0000}{}
+\icmlauthor{Presenting Author}{equal,atlantis}{}{presenting}
+\icmlauthor{Middle Author}{atlantis,olympus}{0000-0000-0000-0000}{}
+\icmlauthor{Last Author}{void}{}{}
+\end{icmlauthorlist}
+
+\icmlaffiliation{olympus}{Olympus Academy of Mountaineering, Mytikas, Greece 402 00}
+\icmlaffiliation{atlantis}{University of Underwater Studies, Atlantis 341}
+\icmlaffiliation{void}{University of Nowhere}
+\icmlcorrespondingauthor{Last Author}{dropides@void.ai}
+\icmlcorrespondingauthor{Hades}{boss@underworld.ai}
+
+\printAffiliations
+\vskip 2.5ex
+]
+\thispagestyle{fancy}
+
+\section{Introduction}
+\label{sec:introduction}
+The page limit is two pages, not counting the acknowledgments, references, and appendices. Please do not change the font sizes, margins or line spacing to squeeze more text. ORCID links for the authors will make it easier for the readers to find you, but are not mandatory.
+
+\section{Substantial section}
+\label{sec:substantial}
+If you want to, you can split the text into sections. An AIX -- Accelerate abstract is not a journal paper, so there is no hard requirement for the work to be reproducible from the text. At the same time, the reviewers and, ultimately, your fellow attendees look for novelty, significance, and soundness -- the abstract must convey what was done, why, and the validation results. It can include equations, such as Formula~\ref{eq:pattern-math}. If the abstract is based on your previously published work, it should be clearly stated and cited.
+\begin{equation}
+    \label{eq:pattern-math}
+    \left(\lim_{x\to 8^+}\frac{1}{x-8} = \infty\right)\Rightarrow\left(\lim_{x\to 3^+}\frac{1}{x-3} = \omega\right)
+\end{equation}
+
+\subsection{Related work}
+A good way to show novelty is to state the difference from the related work, for example \cite{mettam2009chapter,strunk2000elements,mack2015virgin}.
+
+\subsection{Figures and tables}
+Figure~\ref{fig:example} and table~\ref{tab:table} are single--column, but two--column layout can also be used.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=\columnwidth]{pics/cat-lab.png}
+\caption{Experimental verification of AI results is a big plus, but is not mandatory}
+\label{fig:example}
+\end{figure}
+
+\begin{table}[htp]
+\caption{Major data of the orbits of Venus, Earth, Mars and Jupiter.}
+\label{tab:table}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\begin{tabularx}{\columnwidth}{XCCCC}
+\toprule
+& Venus & Earth & Mars & Jupiter\\\midrule
+$M/M_\text{E}$ & 0.82 & 1 & 0.11 & 317.89\\
+$R$, AU & 0.7233 & 1 & 1.524 & 5.203\\
+$i$, deg & 3.40 & 0 & 1.85 & 1.30\\
+$T$, years & 0.62 & 1 & 1.88 & 11.86\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section*{AI Acknowledgments}
+You are welcome to share how you used AI to prepare the work, be it grammar cheeking or doing the study end-to-end. This is not mandatory and is not included in the page limit.
+
+\section*{Acknowledgments}
+Acknowledgments and references are not numbered and not included in the page limit -- feel free to give credit where it's due. The template is based on the IAC 2024 unofficial template~\cite{iac2024template}.
+
+\bibliography{biblio}
+
+\begin{appendices}
+\section{My title}
+A paper may contain an unlimited number of appendices which don't count towards the page limit, but the reviewers are not required to read them.
+\end{appendices}
+\end{document}
