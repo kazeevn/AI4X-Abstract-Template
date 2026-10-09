@@ -1,7 +1,7 @@
 % Based on the unofficial IAC LaTeX template by J. O. Woods, D. Grande and S. Farì
 % (github.com/grande-dev/International-Astronautical-Congress-LaTeX-template);
 % the author block reuses the ICML 2025 LaTeX style
-% See COPYRIGHT for the authorship history
+% See LICENSE for the authorship history
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ai4x}[AI4X conference style]
 
