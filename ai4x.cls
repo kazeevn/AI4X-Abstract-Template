@@ -189,7 +189,7 @@
 
 
 % Biblio handling
-\bibliographystyle{unsrt}
+\bibliographystyle{unsrturl}
 
 \AtBeginDocument{
   \hypersetup{
