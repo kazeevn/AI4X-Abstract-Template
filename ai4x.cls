@@ -1,4 +1,6 @@
-% Based on the IAC 2024 unofficial LaTeX style; the author block reuses the ICML 2025 LaTeX style
+% Based on the unofficial IAC LaTeX template by J. O. Woods, D. Grande and S. Farì
+% (github.com/grande-dev/International-Astronautical-Congress-LaTeX-template);
+% the author block reuses the ICML 2025 LaTeX style
 % See COPYRIGHT for the authorship history
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ai4x}[AI4X conference style]
@@ -126,11 +128,16 @@
 
 \newcommand{\correspondingauthor}[2]{
  \ifdefined\ai@corresponding
-   \g@addto@macro\ai@corresponding{, #1 \authormail{#2}}
+   \g@addto@macro\ai@corresponding{, \ai@keep{#1 \authormail{#2}}}
  \else
-   \gdef\ai@corresponding{#1 \authormail{#2}}
+   \gdef\ai@corresponding{\ai@keep{#1 \authormail{#2}}}
  \fi
 }
+
+% Keep an affiliation or a correspondence entry on one line, unless it is wider than the page
+\newcommand{\ai@keep}[1]{%
+  \sbox\z@{#1}%
+  \ifdim\wd\z@>\hsize #1\else\usebox\z@\fi}
 
 \newcommand{\authormail}[1]{\href{mailto:#1}{\uline{#1}}}
 
@@ -190,7 +197,7 @@
   }
 }
 
-\newcommand{\ai@equalcontribution}{\textsuperscript{*}Equal contribution }
+\newcommand{\ai@equalcontribution}{\textsuperscript{*}Equal contribution}
 \newcounter{@affilnum}
 \def\@maketitle{%
   \newpage
@@ -201,20 +208,26 @@
 }
 
 \newcommand{\printAffiliations}{%
-    \ifdefined\ai@equalpresent
-    \ai@equalcontribution
-    \fi
-    \stepcounter{@affiliationcounter}%
-    \forloop{@affilnum}{1}{\value{@affilnum} < \value{@affiliationcounter}}{
-    \textsuperscript{\arabic{@affilnum}}\ifcsname @affilname\the@affilnum\endcsname%
-    \csname @affilname\the@affilnum\endcsname%
+  \begingroup
+  \centering\small
+  \ifdefined\ai@equalpresent
+    \ai@keep{\ai@equalcontribution}\quad
+  \fi
+  \stepcounter{@affiliationcounter}%
+  \forloop{@affilnum}{1}{\value{@affilnum} < \value{@affiliationcounter}}{%
+    \ifnum\value{@affilnum}>\@ne\quad\fi
+    \ifcsname @affilname\the@affilnum\endcsname
+      \ai@keep{\textsuperscript{\arabic{@affilnum}}\csname @affilname\the@affilnum\endcsname}%
     \else
-    {\bf AUTHORERR: Missing \textbackslash{}affiliation.}
+      \textsuperscript{\arabic{@affilnum}}{\bfseries AUTHORERR: Missing \textbackslash{}affiliation.}%
     \fi
-    }.
-    \ifdefined\ai@corresponding
-    Correspondence to: \ai@corresponding.
-    \else
-    {\bf AUTHORERR: Missing \textbackslash{}correspondingauthor.}
-    \fi
-}%-----
+  }%
+  \par
+  \ifdefined\ai@corresponding
+    Correspondence to: \ai@corresponding
+  \else
+    {\bfseries AUTHORERR: Missing \textbackslash{}correspondingauthor.}%
+  \fi
+  \par
+  \endgroup
+}
