@@ -189,7 +189,32 @@
 
 
 % Biblio handling
-\bibliographystyle{unsrturl}
+\bibliographystyle{ai4x}
+
+% Reference metadata: ai4x.bst passes each cited entry's BibTeX record, hex-encoded, to \aibibexport.
+% The records are collected in \jobname-references.hex and embedded in the PDF as
+% cited-references.bib.hex, so the references can be checked without parsing the typeset text
+\RequirePackage{embedfile}
+\newwrite\ai@bibexport
+\newif\ifai@bibexportopen
+\newif\ifai@bibexported
+\newcommand{\aibibexport}[1]{%
+  \ifai@bibexportopen\else
+    \immediate\openout\ai@bibexport=\jobname-references.hex\relax
+    \global\ai@bibexportopentrue
+  \fi
+  \immediate\write\ai@bibexport{#1}}
+% Embedded at the end of the bibliography: embedfile writes its file list at the end of the document
+\AfterEndEnvironment{thebibliography}{%
+  \ifai@bibexportopen
+    \immediate\closeout\ai@bibexport
+    \global\ai@bibexportopenfalse
+    \ifai@bibexported\else
+      \embedfile[filespec=cited-references.bib.hex,mimetype=text/plain,
+        desc={BibTeX records of the cited references, hex-encoded (ai4x.bst)}]{\jobname-references.hex}%
+      \global\ai@bibexportedtrue
+    \fi
+  \fi}
 
 \AtBeginDocument{
   \hypersetup{
