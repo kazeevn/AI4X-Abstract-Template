@@ -1,0 +1,67 @@
+# Builds ai4x-template.pdf and publishes a GitHub Release when a tag like v2027.1 (v<year>.<release>) is pushed:
+#   git tag -a v2027.1 -m "AI4X 2027 template, release 1" && git push origin v2027.1
+# The release gets two assets: the template sources as ai4x-template-<tag>.zip
+# (paths marked export-ignore in .gitattributes are left out) and the compiled ai4x-template.pdf.
+# Running the workflow manually builds the same files as a workflow artifact without releasing.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9][0-9][0-9][0-9].*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: ai4x-template.tex
+
+      - name: Check the BibTeX records are embedded
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends poppler-utils
+          pdfdetach -list ai4x-template.pdf | grep -q 'cited-references\.bib\.hex'
+
+      - name: Archive the sources
+        run: |
+          name="ai4x-template-${GITHUB_REF_NAME//\//-}"
+          git archive --format=zip --prefix="$name/" -o "$name.zip" HEAD
+          mkdir dist
+          mv "$name.zip" ai4x-template.pdf dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: dist/
+          if-no-files-found: error
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-files
+          path: dist
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --verify-tag \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
