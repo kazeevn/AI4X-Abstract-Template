@@ -23,6 +23,7 @@
 \RequirePackage[colorlinks,pdfusetitle,pdftex]{hyperref}
 \RequirePackage{xurl}
 \RequirePackage{orcidlink}
+\RequirePackage[numbers]{natbib}
 
 \renewcommand{\headrulewidth}{0pt}
 

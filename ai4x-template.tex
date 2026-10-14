@@ -1,12 +1,11 @@
 \documentclass{ai4x}
 \usepackage{tabularx}
-%\usepackage{tabulary}
 
 \title{AI4X Conference 2027 abstract template and formatting guidelines}
 
-% Filling all the PDF meta information improves search rankings
+% Filling all the PDF meta information improves search discoverability
 \hypersetup{
-    pdfkeywords={AI, machine learning, science, conference template}
+    pdfkeywords={AI for Science, A4X, AI, machine learning, science}
     % pdfauthor and pdftitle are filled automatically
     % by the ai4x style at \begin{document}
 }
@@ -53,7 +52,7 @@ If you want to, you can split the text into sections. An AI4X abstract is not a 
 \end{equation}
 
 \subsection{Related work}
-A good way to show novelty is to state the difference from the related work, for example, on protein structure prediction~\cite{jumper2021alphafold}, graph neural networks (GNNs) for molecules and materials~\cite{schutt2017schnet,xie2018crystal}, materials discovery at scale~\cite{merchant2023scaling}, or autonomous laboratories~\cite{burger2020mobile}.
+A good way to show novelty is to state the difference from the related work, for example, on protein structure prediction~\citep{jumper2021alphafold}, graph neural networks (GNNs) for molecules and materials~\citep{schutt2017schnet,xie2018crystal}, materials discovery at scale~\citep{merchant2023scaling}, or autonomous laboratories~\citep{burger2020mobile}. An overview of the previous state of the field can be found in the AI4X Roadmap from a previous conference edition~\citep{dale2025ai4xroadmapartificialintelligence}.
 
 \subsection{Figures and tables}
 Figure~\ref{fig:example} and Table~\ref{tab:results} are single-column, but two-column layout can also be used.
@@ -61,7 +60,7 @@ Figure~\ref{fig:example} and Table~\ref{tab:results} are single-column, but two-
 \begin{figure}[htp]
 \centering
 \includegraphics[width=\columnwidth]{pics/bremen-lab.jpeg}
-\caption{Collaboration was just as important to the success of the study as automation. The illustration was generated with Google Gemini (Nano Banana), and its defects are kept on purpose: repeated labels, a garbled label for the dog, and numbered markers that refer to nothing. Check generated figures as carefully as the rest of your work.}
+\caption{Collaboration was just as important to the success of the study as automation. The illustration was generated with Google Gemini (Nano Banana), and its defects are kept on purpose.}
 \label{fig:example}
 \end{figure}
 
@@ -82,7 +81,7 @@ Ours & $\mathbf{28 \pm 1}$ & $\mathbf{0.99}$ & $1.5$\\
 \section*{AI Acknowledgments}
 Figure~\ref{fig:example} was generated with Google Gemini (Nano Banana), and the class file and this text were revised with Claude Code (Claude Opus 5.5).
 
-At AI4X, we welcome the new AI age and believe that, used well, AI can do much more than produce ``AI slop''. You are welcome to share how you used AI to prepare the work, be it grammar checking or doing the study end-to-end. This is not mandatory and is not included in the page limit. Whatever tools you use, the authors are fully responsible for the submission, including any text, code, figures, and references produced with AI; in particular, check that every cited work exists~\cite{ai4x2028hallucinated}. You can use \href{https://github.com/constructorfabric/reference-audit/}{\texttt{reference-audit}} to run the checks yourself. The template's bibliography style embeds the BibTeX records of the cited works in the PDF -- only the fields printed in the references plus identifiers such as DOI, ISBN, and arXiv id -- and \texttt{reference-audit} reads them from there.
+At AI4X, we welcome the new AI age and believe that, used well, AI can do much more than produce ``AI slop''. You are welcome to share how you used AI to prepare the work, be it grammar checking or doing the study end-to-end. This is not mandatory and is not included in the page limit. Whatever tools you use, the authors are fully responsible for the submission, including any text, code, figures, and references produced with AI; in particular, check that every cited work exists~\cite{ai4x2028hallucinated}. You can use \href{https://github.com/constructorfabric/reference-audit/}{\texttt{reference-audit}} to run the checks yourself. The template embeds the BibTeX records of the cited works in the PDF -- only the fields printed in the references plus identifiers such as DOI, ISBN, and arXiv id.
 
 \section*{Acknowledgments}
 Acknowledgments and references are not numbered and not included in the page limit -- feel free to give credit where it's due. The template is based on the unofficial International Astronautical Congress template~\cite{iactemplate}.
